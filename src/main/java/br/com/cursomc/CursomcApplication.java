@@ -9,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import br.com.cursomc.domain.Category;
 import br.com.cursomc.domain.City;
+import br.com.cursomc.domain.Client;
+import br.com.cursomc.domain.Endereco;
 import br.com.cursomc.domain.Product;
 import br.com.cursomc.domain.State;
+import br.com.cursomc.domain.enums.ClientType;
 import br.com.cursomc.services.CategoryService;
 import br.com.cursomc.services.CityService;
+import br.com.cursomc.services.ClientService;
+import br.com.cursomc.services.EnderecoService;
 import br.com.cursomc.services.ProductService;
 import br.com.cursomc.services.StateService;
 
@@ -27,6 +32,11 @@ public class CursomcApplication implements CommandLineRunner {
 	private StateService stateService;
 	@Autowired
 	private CityService cityService;
+	@Autowired
+	private ClientService clientService;
+	@Autowired
+	private EnderecoService enderecoService;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
 	}
@@ -48,10 +58,19 @@ public class CursomcApplication implements CommandLineRunner {
 		City city2 = new City(null, "São Paulo", s2);
 		s1.getCities().add(city1);
 		s2.getCities().add(city2);
+		
 		this.stateService.saveAll(Arrays.asList(s1,s2));
 		this.cityService.saveAll(Arrays.asList(city1,city2));
 		this.categoryService.saveAll(Arrays.asList(c1, c2));
 		this.productService.saveAll(Arrays.asList(p1, p2));
+		
+		Client client1 = new Client(null, "Rafu", "fel.rique70@gmail.com", "04649488273", ClientType.PESSOAFISICA);
+		client1.getTelefones().add("91983610117");
+		
+		Endereco end = new Endereco(null, "Psg. Belo Horizonte", "22", "Quadra A", "Terra Firme", "66077-040", client1, city1);
+		client1.getEnderecos().add(end);
+		clientService.saveAll(Arrays.asList(client1));
+		enderecoService.saveAll(Arrays.asList(end));		
 	}
 
 }
