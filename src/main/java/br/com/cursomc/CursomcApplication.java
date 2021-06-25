@@ -1,6 +1,7 @@
 package br.com.cursomc;
 
 import java.util.Arrays;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -11,13 +12,22 @@ import br.com.cursomc.domain.Category;
 import br.com.cursomc.domain.City;
 import br.com.cursomc.domain.Client;
 import br.com.cursomc.domain.Endereco;
+import br.com.cursomc.domain.ItemPedido;
+import br.com.cursomc.domain.Payment;
+import br.com.cursomc.domain.PaymentWithCard;
+import br.com.cursomc.domain.PaymentWithTicket;
+import br.com.cursomc.domain.Pedido;
 import br.com.cursomc.domain.Product;
 import br.com.cursomc.domain.State;
 import br.com.cursomc.domain.enums.ClientType;
+import br.com.cursomc.domain.enums.PaymentStatus;
 import br.com.cursomc.services.CategoryService;
 import br.com.cursomc.services.CityService;
 import br.com.cursomc.services.ClientService;
 import br.com.cursomc.services.EnderecoService;
+import br.com.cursomc.services.ItemPedidoService;
+import br.com.cursomc.services.PaymentService;
+import br.com.cursomc.services.PedidoService;
 import br.com.cursomc.services.ProductService;
 import br.com.cursomc.services.StateService;
 
@@ -36,7 +46,12 @@ public class CursomcApplication implements CommandLineRunner {
 	private ClientService clientService;
 	@Autowired
 	private EnderecoService enderecoService;
-	
+	@Autowired
+	private PaymentService paymentService;
+	@Autowired
+	private PedidoService pedidoService;
+	@Autowired
+	private ItemPedidoService itemPedidoService;
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
 	}
@@ -71,6 +86,26 @@ public class CursomcApplication implements CommandLineRunner {
 		client1.getEnderecos().add(end);
 		clientService.saveAll(Arrays.asList(client1));
 		enderecoService.saveAll(Arrays.asList(end));		
+		
+		Pedido ped1 = new Pedido(null, new Date(), client1, end);
+		Pedido ped2 = new Pedido(null, new Date(), client1, end);
+		
+		Payment pay1 = new PaymentWithCard(null, PaymentStatus.QUITADO, ped1, 6);
+		ped1.setPagamento(pay1);
+		Payment pay2 = new PaymentWithTicket(null, PaymentStatus.PENDENTE, ped2, new Date(), null);
+		ped2.setPagamento(pay2);
+		client1.getPedidos().addAll(Arrays.asList(ped1,ped2));
+		this.pedidoService.saveAll(Arrays.asList(ped1,ped2));
+		this.paymentService.saveAll(Arrays.asList(pay1,pay2));
+		this.clientService.saveAll(Arrays.asList(client1));
+		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.0, 1, 2000.0);
+		ItemPedido ip2 = new ItemPedido(ped1, p2, 0.0, 2, 80.0);
+		ped1.getItems().add(ip1);
+		ped2.getItems().add(ip2);
+		p1.getItems().add(ip1);
+		p2.getItems().add(ip2);
+		itemPedidoService.saveAll(Arrays.asList(ip1,ip2));
 	}
 
 }
