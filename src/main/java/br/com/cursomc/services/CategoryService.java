@@ -33,7 +33,8 @@ public class CategoryService {
 	}
 
 	public Category update(Category obj) {
-		this.find(obj.getId());
+		Category newObj = this.find(obj.getId());
+		this.updateData(newObj, obj);
 		return this.repository.save(obj);
 	}
 
@@ -57,5 +58,9 @@ public class CategoryService {
 	
 	public Category fromDTO(CategoryDTO dto) {
 		return new Category(dto.getId(),dto.getNome());
+	}
+	
+	private void updateData(Category newObj, Category obj) {
+		newObj.setNome(obj.getNome());
 	}
 }
