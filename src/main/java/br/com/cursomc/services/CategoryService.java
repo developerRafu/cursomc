@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import br.com.cursomc.domain.Category;
@@ -32,5 +33,14 @@ public class CategoryService {
 	public Category update(Category obj) {
 		this.find(obj.getId());
 		return this.repository.save(obj);
+	}
+
+	public void delete(Integer id) {
+		this.find(id);
+		try {
+			this.repository.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new br.com.cursomc.services.exceptions.DataIntegrityViolationException("Não é possível escluir uma categoria que possui produtos");
+		}
 	}
 }
