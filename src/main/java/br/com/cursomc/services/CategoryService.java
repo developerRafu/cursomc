@@ -1,13 +1,15 @@
 package br.com.cursomc.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import br.com.cursomc.domain.Category;
+import br.com.cursomc.domain.dto.CategoryDTO;
 import br.com.cursomc.repositories.CategoryRepository;
 import br.com.cursomc.services.exceptions.ObjectNotFoundException;
 
@@ -42,5 +44,18 @@ public class CategoryService {
 		} catch (DataIntegrityViolationException e) {
 			throw new br.com.cursomc.services.exceptions.DataIntegrityViolationException("Não é possível escluir uma categoria que possui produtos");
 		}
+	}
+
+	public List<Category> findAll() {
+		return this.repository.findAll();
+	}
+	
+	public Page<Category> findPage(Integer page, Integer size){
+		PageRequest pageRequest = PageRequest.of(page,size);
+		return this.repository.findAll(pageRequest);
+	}
+	
+	public Category fromDTO(CategoryDTO dto) {
+		return new Category(dto.getId(),dto.getNome());
 	}
 }

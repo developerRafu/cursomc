@@ -52,6 +52,7 @@ public class CursomcApplication implements CommandLineRunner {
 	private PedidoService pedidoService;
 	@Autowired
 	private ItemPedidoService itemPedidoService;
+
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
 	}
@@ -60,6 +61,16 @@ public class CursomcApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Category c1 = new Category(null, "Hardware");
 		Category c2 = new Category(null, "Livros");
+		Category c3 = new Category(null, "Hardware");
+		Category c4 = new Category(null, "Livros");
+		Category c5 = new Category(null, "Hardware");
+		Category c6 = new Category(null, "Livros");
+		Category c7 = new Category(null, "Hardware");
+		Category c8 = new Category(null, "Livros");
+		Category c9 = new Category(null, "Hardware");
+		Category c10 = new Category(null, "Livros");
+		Category c11 = new Category(null, "Hardware");
+		Category c12 = new Category(null, "Livros");
 		Product p1 = new Product(null, "RTX 3090", 30000.0);
 		Product p2 = new Product(null, "JoJo's Bizarre Adventure", 30.0);
 		c1.getProdutos().add(p1);
@@ -73,39 +84,40 @@ public class CursomcApplication implements CommandLineRunner {
 		City city2 = new City(null, "São Paulo", s2);
 		s1.getCities().add(city1);
 		s2.getCities().add(city2);
-		
-		this.stateService.saveAll(Arrays.asList(s1,s2));
-		this.cityService.saveAll(Arrays.asList(city1,city2));
-		this.categoryService.saveAll(Arrays.asList(c1, c2));
+
+		this.stateService.saveAll(Arrays.asList(s1, s2));
+		this.cityService.saveAll(Arrays.asList(city1, city2));
+		this.categoryService.saveAll(Arrays.asList(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12));
 		this.productService.saveAll(Arrays.asList(p1, p2));
-		
+
 		Client client1 = new Client(null, "Rafu", "fel.rique70@gmail.com", "04649488273", ClientType.PESSOAFISICA);
 		client1.getTelefones().add("91983610117");
-		
-		Endereco end = new Endereco(null, "Psg. Belo Horizonte", "22", "Quadra A", "Terra Firme", "66077-040", client1, city1);
+
+		Endereco end = new Endereco(null, "Psg. Belo Horizonte", "22", "Quadra A", "Terra Firme", "66077-040", client1,
+				city1);
 		client1.getEnderecos().add(end);
 		clientService.saveAll(Arrays.asList(client1));
-		enderecoService.saveAll(Arrays.asList(end));		
-		
+		enderecoService.saveAll(Arrays.asList(end));
+
 		Pedido ped1 = new Pedido(null, new Date(), client1, end);
 		Pedido ped2 = new Pedido(null, new Date(), client1, end);
-		
+
 		Payment pay1 = new PaymentWithCard(null, PaymentStatus.QUITADO, ped1, 6);
 		ped1.setPagamento(pay1);
 		Payment pay2 = new PaymentWithTicket(null, PaymentStatus.PENDENTE, ped2, new Date(), null);
 		ped2.setPagamento(pay2);
-		client1.getPedidos().addAll(Arrays.asList(ped1,ped2));
-		this.pedidoService.saveAll(Arrays.asList(ped1,ped2));
-		this.paymentService.saveAll(Arrays.asList(pay1,pay2));
+		client1.getPedidos().addAll(Arrays.asList(ped1, ped2));
+		this.pedidoService.saveAll(Arrays.asList(ped1, ped2));
+		this.paymentService.saveAll(Arrays.asList(pay1, pay2));
 		this.clientService.saveAll(Arrays.asList(client1));
-		
+
 		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.0, 1, 2000.0);
 		ItemPedido ip2 = new ItemPedido(ped1, p2, 0.0, 2, 80.0);
 		ped1.getItems().add(ip1);
 		ped2.getItems().add(ip2);
 		p1.getItems().add(ip1);
 		p2.getItems().add(ip2);
-		itemPedidoService.saveAll(Arrays.asList(ip1,ip2));
+		itemPedidoService.saveAll(Arrays.asList(ip1, ip2));
 	}
 
 }
