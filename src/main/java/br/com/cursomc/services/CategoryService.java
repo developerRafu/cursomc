@@ -22,4 +22,9 @@ public class CategoryService {
 	public List<Category> saveAll(List<Category> lista) {
 		return this.repository.saveAll(lista);
 	}
+
+	public Category insert(Category obj) {
+		obj.setId(null);
+		return this.repository.save(obj);
+	}
 }
