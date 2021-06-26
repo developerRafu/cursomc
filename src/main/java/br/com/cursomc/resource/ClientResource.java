@@ -17,9 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.cursomc.domain.Client;
-import br.com.cursomc.domain.Client;
 import br.com.cursomc.domain.dto.ClientDTO;
-import br.com.cursomc.services.ClientService;
+import br.com.cursomc.domain.dto.ClientNewDto;
 import br.com.cursomc.services.ClientService;
 
 @RestController
@@ -41,10 +40,14 @@ public class ClientResource {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> insert(@RequestBody ClientDTO objDto) {
-		Client obj = this.service.fromDTO(objDto);
+	public ResponseEntity<Void> insert(@RequestBody ClientNewDto objNewDto) {
+		Client obj = this.service.fromDTO(objNewDto);
 		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder
+				.fromCurrentRequest()
+				.path("/{id}")
+				.buildAndExpand(obj.getId())
+				.toUri();
 		return ResponseEntity.created(uri).build();
 	}
 
