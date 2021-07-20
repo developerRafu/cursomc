@@ -44,4 +44,5 @@ public class ProductService {
 		}
 		return this.repository.search(nome, ids, page);
 	}
+	
 }

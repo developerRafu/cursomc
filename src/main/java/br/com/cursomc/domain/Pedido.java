@@ -125,6 +125,6 @@ public class Pedido implements Serializable {
 	}
 
 	public Set<ItemPedido> getItems() {
-		return items;
+		return this.items;
 	}
 }

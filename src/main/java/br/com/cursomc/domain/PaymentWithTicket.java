@@ -5,9 +5,12 @@ import java.util.Date;
 import javax.persistence.Entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import br.com.cursomc.domain.enums.PaymentStatus;
 @Entity
+@JsonTypeName("paymentWithTicket")
 public class PaymentWithTicket extends Payment {
 
 	private static final long serialVersionUID = 1L;

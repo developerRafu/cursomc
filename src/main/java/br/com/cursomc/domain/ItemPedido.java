@@ -76,6 +76,14 @@ public class ItemPedido implements Serializable {
 	public Product getPtroduto() {
 		return this.id.getProduto();
 	}
+	
+	public void setPedido(Pedido pedido) {
+		this.id.setPedido(pedido);
+	}
+	
+	public void setProduto(Product product) {
+		this.id.setProduto(product);
+	}
 
 	@Override
 	public int hashCode() {
