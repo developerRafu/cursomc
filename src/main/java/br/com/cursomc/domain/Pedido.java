@@ -15,31 +15,32 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
-public class Pedido implements Serializable{
+public class Pedido implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	private Date instant;
-	
-	@OneToOne(cascade=CascadeType.ALL, mappedBy = "pedido")
+
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
 	private Payment pagamento;
-	
+
 	@ManyToOne
 	private Client client;
-	
+
 	@ManyToOne
 	private Endereco enderecoDeEntrega;
-	
+
 	@OneToMany(mappedBy = "id.pedido")
 	private Set<ItemPedido> items = new HashSet<>();
-	
+
 	public Pedido() {
-		
+
 	}
 
 	public Pedido(Integer id, Date instant, Client client, Endereco enderecoDeEntrega) {
@@ -48,6 +49,14 @@ public class Pedido implements Serializable{
 		this.instant = instant;
 		this.client = client;
 		this.enderecoDeEntrega = enderecoDeEntrega;
+	}
+
+	public double getTotal() {
+		double sum = 0;
+		for (ItemPedido ip : items) {
+			sum += ip.getSubTotal();
+		}
+		return sum;
 	}
 
 	public Integer getId() {
